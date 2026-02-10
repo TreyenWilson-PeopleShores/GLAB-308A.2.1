@@ -44,3 +44,40 @@ robin.companion.companion.type = "Flea";
 robin.companion.companion.inventory =["Small hat", "sunglasses"]
 
 robin.companion.roll;
+
+
+class Adventurer extends Character {
+  constructor (name, role) {
+    super(name);
+    // Adventurers have specialized roles.
+    this.role = role;
+    // Every adventurer starts with a bed and 50 gold coins.
+    this.inventory.push("bedroll", "50 gold coins");
+  }
+  // Adventurers have the ability to scout ahead of them.
+  scout () {
+    console.log(`${this.name} is scouting ahead...`);
+    super.roll();
+  }
+}
+
+
+class Companion extends Character {
+  constructor ( role, type, health) {
+   
+    // Adventurers have specialized roles.
+    this.role = role;
+    this.type = type; 
+    this.health = health;
+    // Every adventurer starts with a bed and 50 gold coins.
+   
+  }
+  // Adventurers have the ability to scout ahead of them.
+  scout () {
+    console.log(`${this.name} is scouting ahead...`);
+    super.roll();
+  }
+}
+robin = new Adventurer(robin.name, robin.role);
+let Leo = new Companion(robin.companion.name, robin.companion.role, robin.companion.type, robin.companion.health);
+let Frank = new Companion(robin.companion.companion.name, robin.companion.companion.role, robin.companion.companion.type, robin.companion.companion.health);
