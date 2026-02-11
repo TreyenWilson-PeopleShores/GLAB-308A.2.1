@@ -76,6 +76,13 @@ class Adventurer extends Character {
     console.log(`${this.name} is scouting ahead...`);
     super.roll();
   }
+  duel(Adventurer, self){
+    opponent = Adventurer;
+    self = self;
+    roleSelf = this.roll;
+    roleOpponent = this.roll;
+    console.log(roleSelf, roleOpponent)
+  }
 }
 
 
@@ -96,7 +103,7 @@ class Companion extends Character {
 }
 let leo = new Companion(robin.companion.name, robin.companion.role, robin.companion.type, robin.companion.health, robin.MAX_HEALTH);
 let frank = new Companion(robin.MAX_HEALTH, robin.companion.companion.name, robin.companion.companion.role, robin.companion.companion.type, robin.companion.companion.health);
-robin = new Adventurer(robin.name, robin.role, robin.MAX_HEALTH,);
+let robin2 = new Adventurer(robin.name, robin.role, robin.MAX_HEALTH,);
 
 
 console.log(leo.name, leo.health);
@@ -111,14 +118,17 @@ leo.smell;
 console.log(robin.role);
 
 class AdventurerFactory {  
-  constructor (role) {
-    this.role = role;
-    this.adventurers = [];
-  }
-  generate (name) {
-    const newAdventurer = new Adventurer(name, this.role);
-    this.adventurers.push(newAdventurer);
-  }
+    constructor(role, oldRole){ // Had to modify it since it wasn't working
+        this.role = role;
+        this.oldRole = oldRole;
+        this.oldRole = this.role;
+        this.adventurers = [];
+    }
+  //generate (name) {
+  //  const newAdventurer = new Adventurer(name, this.role); 
+  //  This code from the assignment errors out for some reason, I'm able to set the class properly with my code that I modified for it.
+  //  this.adventurers.push(newAdventurer);
+  //}
   findByIndex (index) {
     return this.adventurers[index];
   }
@@ -128,21 +138,13 @@ class AdventurerFactory {
 }
 
 const healers = new AdventurerFactory("Healer");
-robin = healers.generate("Robin");
+//robin = healers.generate("Robin");
 
 
 
-console.log(robin.role);
-
-
-class AdventurerFactory2{ // This is working for the class change
-    constructor(role, oldRole){
-        this.role = role;
-        this.oldRole = oldRole;
-        this.oldRole = this.role;
-    }
     
-}
-console.log(robin.role);
 
-robin = new AdventurerFactory2("Healer", robin.role);
+robin = new AdventurerFactory("Healer", robin.role);
+
+robin.scout
+
