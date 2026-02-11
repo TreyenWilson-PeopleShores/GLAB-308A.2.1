@@ -1,38 +1,47 @@
-let adventurer ={
-    name: "Robin",
-    health: 10,
-    inventory: ["sword", "potion", "artifact"]
+// THIS IS A RETRY FILE
+
+const adventurer = {
+name: "Robin",
+health: 10,
+inventory: ["sword", "potion", "artifact"],
+companion: {
+    name: "Leo",
+    type: "Cat",
+    companion: {
+        name: "Frank",
+        type: "Flea"
 }
+},
+    roll (mod = 0) {
+        const result = Math.floor(Math.random() * 20) + 1 + mod;
+        console.log(`${this.name} rolled a ${result}.`)
+        }
+}
+
+
+console.log(adventurer.inventory[0]);
 
 for (item of adventurer.inventory){
     console.log(item);
 }
-adventurer.companion = {};
-adventurer.companion.name = "Leo";
-adventurer.companion.type = "Cat";
+
+adventurer.roll();
 
 
-adventurer.companion.companion = {};
-adventurer.companion.companion.name = "Frank";
-adventurer.companion.companion.type = "Flea";
-
-
-adventurer.roll = function roll (mod = 0) {
-    const result = Math.floor(Math.random()*20)+1+mod;
-    console.log(`${this.name} rolled a ${result}.`)
-}
-
-adventurer.roll()
-
-
-class Character{
-    constructor (name, roll){
+class Character {
+    constructor (name) {
         this.name = name;
-        this.roll = roll;
         this.health = 100;
         this.inventory = [];
         this.MAX_HEALTH = 100;
+        
     }
+    roll (mod = 0) {
+        const result = Math.floor(Math.random() * 20) + 1 + mod;
+        console.log(`${this.name} rolled a ${result}.`)
+        return result;
+    }
+  
 }
 
 let robin = new Character("Robin");
@@ -41,20 +50,20 @@ robin.companion = new Character("Leo");
 robin.companion.type = "Cat";
 robin.companion.companion = new Character("Frank");
 robin.companion.companion.type = "Flea";
-robin.companion.companion.inventory =["Small hat", "sunglasses"]
+robin.companion.companion.inventory = ["small hat", "sunglasses"];
 
-robin.companion.roll;
-
+robin.roll();
 
 
 class Adventurer extends Character {
-  constructor (name, role, MAX_HEALTH, ROLES) {
+  constructor (name, role, style, stats, MAX_HEALTH, ROLES) {
     super(name);
     // Adventurers have specialized roles.
     this.role = role;
+    this.style = style;
+    this.stats = stats;
     this.MAX_HEALTH = MAX_HEALTH;
     ROLES = ["Wizard", "Fighter", "Healer"];
-    ROLES = ROLES;
     if(role!== ROLES[0] && role!== ROLES[1] && role!== ROLES[2]){
         // Put a random number picker here, between 0 to 2, to determine give robin a random class, if they don't have one... maybe use "grater than .5"
         // or less then to decided?
@@ -76,53 +85,81 @@ class Adventurer extends Character {
     console.log(`${this.name} is scouting ahead...`);
     super.roll();
   }
-  duel(Adventurer, self){
-    opponent = Adventurer;
+duel(Adventurer, self){
+    let results=[];
+    let opponent = Adventurer;
     self = self;
-    roleSelf = this.roll;
-    roleOpponent = this.roll;
-    console.log(roleSelf, roleOpponent)
+    while(true){
+        let rollSelf = super.roll();
+        let rollOpponent = super.roll();
+        console.log(rollSelf, rollOpponent)
+        if(rollSelf>rollOpponent){
+            self.health-=1;
+            results.push({health_self: self.health, roll_self: rollSelf, health_opponent: Adventurer.health, roll_opponent: rollOpponent})
+            if(self.health === 50){
+                results.push({winner: Adventurer.name});
+                break;
+            }
+        } else if(rollSelf<rollOpponent){
+            Adventurer.health-=1;
+            results.push({health_self: self.health, roll_self: rollSelf, health_opponent: Adventurer.health, roll_opponent: rollOpponent})
+            // I have these push statements here instead of after the if/else statements so that I can log the health at 50, not 51.
+            if(Adventurer.health === 50){
+                results.push({winner: self.name});
+                break;
+                
+            }
+        }
+
+    }
+    console.log(results)
   }
 }
 
 
 class Companion extends Character {
-  constructor (name, role, type, health) {
-   
+  constructor (name, bite, love, stats, MAX_HEALTH) {
     super(name);
-    this.role = role;
-    this.type = type; 
-    this.health = health;
-   
+    this.bite = bite;
+    this.love = love;
+    this.stats = stats;
+    this.MAX_HEALTH = MAX_HEALTH;
+    this.inventory.push("");
   }
-  
-  smell () { // Companions can small for secrets
+  // Adventurers have the ability to smell for secrets.
+  smell () {
     console.log(`${this.name} is smelling for secrets...`);
     super.roll();
   }
 }
-let leo = new Companion(robin.companion.name, robin.companion.role, robin.companion.type, robin.companion.health, robin.MAX_HEALTH);
-let frank = new Companion(robin.MAX_HEALTH, robin.companion.companion.name, robin.companion.companion.role, robin.companion.companion.type, robin.companion.companion.health);
-let robin2 = new Adventurer(robin.name, robin.role, robin.MAX_HEALTH,);
 
-
-console.log(leo.name, leo.health);
-leo.smell;
-
-
-//console.log(Adventurer);
-
-// Character.MAX_HEALTH = 100;
-//Adventurer.ROLES = ["Fighter", "Healer", "Wizard"]; Had to do this in CLASS
+robin = new Adventurer("Robin"); //REDECLARATION TO NEW CLASSES
+robin.inventory = ["sword", "potion", "artifact"];
+robin.companion = new Companion("Leo");
+robin.companion.type = "Cat";
+robin.companion.companion = new Companion("Frank");
+robin.companion.companion.type = "Flea";
+robin.companion.companion.inventory = ["small hat", "sunglasses"];
 
 console.log(robin.role);
 
+//robin.scout()
+//robin.duel(robin, robin)
+
+
+
 class AdventurerFactory {  
-    constructor(role, oldRole){ // Had to modify it since it wasn't working
+    constructor(role, oldRole, subject){ // Had to modify it since it wasn't working
         this.role = role;
         this.oldRole = oldRole;
         this.oldRole = this.role;
         this.adventurers = [];
+        this.subject=subject;
+        this.subject.role = role;
+        
+    }
+    create(role){
+        return new Adventurer(role);
     }
   //generate (name) {
   //  const newAdventurer = new Adventurer(name, this.role); 
@@ -137,14 +174,16 @@ class AdventurerFactory {
   }
 }
 
-const healers = new AdventurerFactory("Healer");
+//const healers = new AdventurerFactory("Healer");
 //robin = healers.generate("Robin");
 
 
-
+crow = new Adventurer("Crow"); //REDECLARATION TO NEW CLASSES
+crow.inventory = ["sword", "shield", "potion"];
     
 
-robin = new AdventurerFactory("Healer", robin.role);
+new AdventurerFactory("Healer", robin.role, robin).create;
+//robin = healers.generate("Robin");
 
-robin.scout
-
+robin.duel(crow, robin);
+console.log(robin.role);
