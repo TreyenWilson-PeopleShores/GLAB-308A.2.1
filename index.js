@@ -63,9 +63,10 @@ class Adventurer extends Character {
 
 
 class Companion extends Character {
-  constructor ( role, type, health) {
+  constructor (name, role, type, health) {
    
     // Adventurers have specialized roles.
+    super(name);
     this.role = role;
     this.type = type; 
     this.health = health;
@@ -78,6 +79,6 @@ class Companion extends Character {
     super.roll();
   }
 }
-robin = new Adventurer(robin.name, robin.role);
 let Leo = new Companion(robin.companion.name, robin.companion.role, robin.companion.type, robin.companion.health);
 let Frank = new Companion(robin.companion.companion.name, robin.companion.companion.role, robin.companion.companion.type, robin.companion.companion.health);
+robin = new Adventurer(robin.name, robin.role);
