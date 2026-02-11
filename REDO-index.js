@@ -103,6 +103,7 @@ duel(Adventurer, self){
         } else if(rollSelf<rollOpponent){
             Adventurer.health-=1;
             results.push({health_self: self.health, roll_self: rollSelf, health_opponent: Adventurer.health, roll_opponent: rollOpponent})
+            // I have these push statements here instead of after the if/else statements so that I can log the health at 50, not 51.
             if(Adventurer.health === 50){
                 results.push({winner: self.name});
                 break;
