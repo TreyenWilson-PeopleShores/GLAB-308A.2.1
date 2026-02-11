@@ -186,4 +186,4 @@ new AdventurerFactory("Healer", robin.role, robin).create;
 //robin = healers.generate("Robin");
 
 robin.duel(crow, robin);
-console.log(robin.role);
+console.log(robin.role); 
