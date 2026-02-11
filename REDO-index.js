@@ -39,6 +39,7 @@ class Character {
     roll (mod = 0) {
         const result = Math.floor(Math.random() * 20) + 1 + mod;
         console.log(`${this.name} rolled a ${result}.`)
+        return result;
     }
   
 }
@@ -85,11 +86,32 @@ class Adventurer extends Character {
     super.roll();
   }
 duel(Adventurer, self){
+    let results=[];
     let opponent = Adventurer;
     self = self;
-    let roleSelf = this.role;
-    let roleOpponent = Adventurer.role;
-    console.log(roleSelf, roleOpponent)
+    while(true){
+        let rollSelf = super.roll();
+        let rollOpponent = super.roll();
+        console.log(rollSelf, rollOpponent)
+        if(rollSelf>rollOpponent){
+            self.health-=1;
+            results.push({health_self: self.health, roll_self: rollSelf, health_opponent: Adventurer.health, roll_opponent: rollOpponent})
+            if(self.health === 50){
+                results.push({winner: Adventurer.name});
+                break;
+            }
+        } else if(rollSelf<rollOpponent){
+            Adventurer.health-=1;
+            results.push({health_self: self.health, roll_self: rollSelf, health_opponent: Adventurer.health, roll_opponent: rollOpponent})
+            if(Adventurer.health === 50){
+                results.push({winner: self.name});
+                break;
+                
+            }
+        }
+
+    }
+    console.log(results)
   }
 }
 
@@ -120,8 +142,8 @@ robin.companion.companion.inventory = ["small hat", "sunglasses"];
 
 console.log(robin.role);
 
-robin.scout()
-robin.duel(robin, robin)
+//robin.scout()
+//robin.duel(robin, robin)
 
 
 
@@ -155,11 +177,12 @@ class AdventurerFactory {
 //robin = healers.generate("Robin");
 
 
-
+crow = new Adventurer("Crow"); //REDECLARATION TO NEW CLASSES
+crow.inventory = ["sword", "shield", "potion"];
     
 
 new AdventurerFactory("Healer", robin.role, robin).create;
 //robin = healers.generate("Robin");
 
-robin.duel(robin, robin);
+robin.duel(crow, robin);
 console.log(robin.role);
